@@ -1,0 +1,98 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1e1e1e;
+    color: white;
+    text-align: center;
+}
+
+#game-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-area {
+    position: relative;
+    width: 500px;
+    height: 300px;
+    background-color: #000;
+    border: 2px solid white;
+    overflow: hidden;
+}
+
+#player {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    border-radius: 5px;
+    transform: translateX(-50%);
+}
+
+#bullet {
+    position: absolute;
+    width: 5px;
+    height: 10px;
+    background-color: yellow;
+    display: none;
+}
+5. script.js（JavaScript邏輯）
+javascript
+複製
+let player = document.getElementById("player");
+let bullet = document.getElementById("bullet");
+let gameArea = document.getElementById("game-area");
+
+let playerSpeed = 5;  // 飛行器的移動速度
+let bulletSpeed = 3;  // 子彈的速度
+let bulletVisible = false;
+
+document.addEventListener("keydown", function(event) {
+    let playerRect = player.getBoundingClientRect();
+    
+    // 左右控制
+    if (event.key === "ArrowLeft" && playerRect.left > 0) {
+        player.style.left = (playerRect.left - playerSpeed) + "px";
+    }
+    if (event.key === "ArrowRight" && playerRect.right < gameArea.offsetWidth) {
+        player.style.left = (playerRect.left + playerSpeed) + "px";
+    }
+
+    // 開火
+    if (event.key === " " && !bulletVisible) {
+        shootBullet();
+    }
+});
+
+function shootBullet() {
+    let playerRect = player.getBoundingClientRect();
+    bullet.style.left = playerRect.left + playerRect.width / 2 - bullet.offsetWidth / 2 + "px";
+    bullet.style.bottom = playerRect.bottom + "px";
+    bullet.style.display = "block";
+    bulletVisible = true;
+    moveBullet();
+}
+
+function moveBullet() {
+    let bulletInterval = setInterval(function() {
+        let bulletRect = bullet.getBoundingClientRect();
+        if (bulletRect.top <= 0) {
+            bullet.style.display = "none";
+            bulletVisible = false;
+            clearInterval(bulletInterval);
+        } else {
+            bullet.style.bottom = (parseInt(bullet.style.bottom) + bulletSpeed) + "px";
+        }
+    }, 10);
+}

@@ -27,21 +27,4 @@ function shootBullet() {
     let playerRect = player.getBoundingClientRect();
     bullet.style.left = playerRect.left + playerRect.width / 2 - bullet.offsetWidth / 2 + "px";
     bullet.style.bottom = playerRect.bottom + "px";
-    bullet.style.display = "block";
-    bulletVisible = true;
-    moveBullet();
-}
-
-function moveBullet() {
-    let bulletInterval = setInterval(function() {
-        let bulletRect = bullet.getBoundingClientRect();
-        if (bulletRect.top <= 0) {
-            bullet.style.display = "none";
-            bulletVisible = false;
-            clearInterval(bulletInterval);
-        } else {
-            bullet.style.bottom = (parseInt(bullet.style.bottom) + bulletSpeed) + "px";
-        }
-    }, 10);
-}
-
+    b
